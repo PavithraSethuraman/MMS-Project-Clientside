@@ -6,7 +6,7 @@ const SettingModal = () => {
         <div className="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">AL-UI Setting</h5>
+              <h5 className="modal-title">Setting</h5>
             </div>
             <div className="modal-body custom_scroll">
               <div className="setting-font">
