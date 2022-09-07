@@ -46,7 +46,7 @@ console.log(userData)
                   <td className="text-center ">{e.createDate}</td>
                   <td className="text-center ">{e.inTime}</td>
                   <td className="text-center ">{e.customerName}</td>
-                  <td className="text-center ">{e.needs}</td>
+                  <td className="text-center " style={{width:"250px"}}>{e.needs}</td>
                   <td className="text-center ">{e.mobile}</td>
                   <td className="text-center ">{e.email}</td>
                   <td className="text-center ">{e.outTime}</td>
