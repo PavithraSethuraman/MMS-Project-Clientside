@@ -96,9 +96,9 @@ const Login = () => {
               <div className="login-inner-form">
                 <div className="details">
                   <div className="logo-2">
-                    <a href="login-30.html">
+                   <Link to='/login'> <a href="">
                       <img src="assets/img/logos/logo-2.png" alt="logo" />
-                    </a>
+                    </a></Link>
                   </div>
                   <h1>Welcome!</h1>
                   <h3>Sign Into Your Account</h3>
