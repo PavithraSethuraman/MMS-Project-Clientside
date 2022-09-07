@@ -200,7 +200,7 @@ const CreateDCM = () => {
                 </label>
                 <div class="col-lg-9">
                   <input
-                    type="text"
+                    type="time"
                     id="outTime"
                     name="outTime"
                     class="form-control"
