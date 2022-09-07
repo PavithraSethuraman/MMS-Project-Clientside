@@ -32,7 +32,7 @@ console.log(userData)
               <th>Date</th>
               <th>In Time</th>
               <th>Customer Name</th>
-              <th>Needs</th>
+              <th style={{width:"250px"}}>Needs</th>
               <th>Contact No</th>
               <th>Email</th>
               <th>Out Time</th>
