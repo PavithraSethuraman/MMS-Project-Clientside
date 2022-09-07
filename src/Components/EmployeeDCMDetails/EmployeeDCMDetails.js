@@ -15,7 +15,6 @@ const EmployeeDCMDetails = () => {
     }
     fetchData();
   }, []);
-console.log(userData)
 
   return (
     
@@ -32,7 +31,7 @@ console.log(userData)
               <th>Date</th>
               <th>In Time</th>
               <th>Customer Name</th>
-              <th style={{width:"250px"}}>Needs</th>
+              <th>Needs</th>
               <th>Contact No</th>
               <th>Email</th>
               <th>Out Time</th>
@@ -46,7 +45,7 @@ console.log(userData)
                   <td className="text-center ">{e.createDate}</td>
                   <td className="text-center ">{e.inTime}</td>
                   <td className="text-center ">{e.customerName}</td>
-                  <td className="text-center " style={{width:"250px"}}>{e.needs}</td>
+                  <td className="text-center " >{e.needs}</td>
                   <td className="text-center ">{e.mobile}</td>
                   <td className="text-center ">{e.email}</td>
                   <td className="text-center ">{e.outTime}</td>
