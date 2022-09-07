@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../authContext/AuthContext";
+import './style.css'
 
 const EmployeeDCMDetails = () => {
   const { user } = useContext(AuthContext);
@@ -31,7 +32,7 @@ const EmployeeDCMDetails = () => {
               <th>Date</th>
               <th>In Time</th>
               <th>Customer Name</th>
-              <th>Needs</th>
+              <th className="customCss">Customer Needs</th>
               <th>Contact No</th>
               <th>Email</th>
               <th>Out Time</th>
@@ -45,7 +46,7 @@ const EmployeeDCMDetails = () => {
                   <td className="text-center ">{e.createDate}</td>
                   <td className="text-center ">{e.inTime}</td>
                   <td className="text-center ">{e.customerName}</td>
-                  <td className="text-center " >{e.needs}</td>
+                  <td className="text-center ">{e.needs}</td>
                   <td className="text-center ">{e.mobile}</td>
                   <td className="text-center ">{e.email}</td>
                   <td className="text-center ">{e.outTime}</td>
