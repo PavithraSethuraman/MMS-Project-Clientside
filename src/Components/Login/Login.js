@@ -33,15 +33,19 @@ const Login = () => {
         password,
       });
       dispatch(loginSuccess(res.data));
-      navigate('/dashboard')
+      setMsg(res.data.message);
+      setTimeout(() => {
+        navigate('/dashboard')
       window.location.reload()
+      }, 2000);
+      
     } catch (err) {
       dispatch(loginFailure(err.response.data.message));
       const error = err.response.data.message;
       setError(error);
       setTimeout(() => {
         navigate("/");
-      }, 1000);
+      }, 2000);
     }
   };
 
@@ -183,6 +187,8 @@ const Login = () => {
                       Register here
                     </a>
                   </p>
+                  {error && <div className="error_msg" style={{background:"red",color:"white"}}>{error}</div>}
+                      {msg && <div className="success_msg" style={{background:"green",color:"white"}}>{msg}</div>}
                 </div>
               </div>
             </div>

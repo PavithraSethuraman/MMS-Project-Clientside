@@ -42,7 +42,7 @@ const EmployeeDCMDetails = () => {
             {userData.map((e, index) => {
               return (
                 <tr key={index}>
-                  <td className="text-center ">{e.dcmId}</td>
+                  <td className="text-center ">{index+1}</td>
                   <td className="text-center ">{e.createDate}</td>
                   <td className="text-center ">{e.inTime}</td>
                   <td className="text-center ">{e.customerName}</td>

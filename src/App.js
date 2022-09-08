@@ -18,6 +18,7 @@ import AdminEmployeeProfileDetails from "./Components/AdminEmployeeDCMDetails/Ad
 import AdminEmployeeDCMDetails from "./Components/AdminEmployeeDCMDetails/AdminEmployeeDCMDetails";
 import AdminDCMEdit from "./Components/AdminDCMEdit/AdminDCMEdit";
 import DCMDatabase from "./Components/DCMDatabase";
+import EmployeeProfileEditComp from "./Components/EmployeeProfileEditComp/EmployeeProfileEditComp";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -52,7 +53,7 @@ function App() {
 
             <Route path="/adminEmployeeDCMDatabase" element={<AdminEmployeeDCMDetails />} />  
 
-            {/* <Route path="/user-edit/:id" element={<UserEdit />} /> */}
+            <Route path="/user-edit/:id" element={<EmployeeProfileEditComp />} />
 
             <Route path="/dcm-edit/:id" element={<AdminDCMEdit />} />
             <Route path="/dcmDatabase" element={<DCMDatabase />} />

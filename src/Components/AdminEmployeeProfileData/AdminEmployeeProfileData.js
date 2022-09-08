@@ -52,7 +52,7 @@ const AdminEmployeeProfileData = () => {
                   <td className="text-center ">{e.userId}</td>
                   <td className="text-center ">{e.userFname}</td>
                   <td className="text-center ">
-                                <Link to={`/user-edit/${e.userId}`}>
+                                <Link to={`/user-edit/${e.userId}`} >
                                   <i className="fa fa-pencil"></i>
                                 </Link>
                               </td>

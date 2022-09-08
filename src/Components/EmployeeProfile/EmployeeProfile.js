@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../authContext/AuthContext";
 
@@ -22,7 +22,6 @@ const EmployeeProfile = () => {
   });
 
   const [error, setError] = useState("");
-  const [msg, setMsg] = useState("");
 
   const navigate = useNavigate();
 
@@ -38,14 +37,25 @@ const EmployeeProfile = () => {
         `https://mms-application.herokuapp.com/api/employee/${user.details._id}/${user.details.userId}`,
         credentials
       );
-
-      setMsg(res.data.message);
-      navigate("/");
+      navigate("/dashboard");
+     
       window.location.reload()
     } catch (err) {
       setError(err.response.data);
     }
   };
+
+
+  const [userData, setUserData] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      let users = await axios.get(
+        `https://mms-application.herokuapp.com/api/employee/${user.details.empId}`
+      );
+      setUserData(users.data);
+    }
+    fetchData();
+  }, []);
 
   return (
     <div class="content">
@@ -88,6 +98,8 @@ const EmployeeProfile = () => {
                     required
                     class="form-control touchspin-postfix"
                     placeholder="Middle Name"
+                    value={userData.empMname}
+                    disabled={userData.empMname ? true : false}
                   />
                 </div>
               </div>
@@ -158,7 +170,9 @@ const EmployeeProfile = () => {
                     onChange={handleChange}
                     class="form-control"
                     required
+                    value={userData.pan}
                     placeholder="Enter PAN Number"
+                    disabled={userData.pan ? true : false}
                   />
                 </div>
               </div>
@@ -246,8 +260,7 @@ const EmployeeProfile = () => {
               </button>
             </div>
           </form>
-          {error && <div className="error_msg">{error}</div>}
-          {msg && <div className="success_msg">{msg}</div>}
+          
         </div>
       </div>
     </div>
