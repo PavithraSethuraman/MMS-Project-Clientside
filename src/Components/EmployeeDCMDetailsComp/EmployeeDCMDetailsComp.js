@@ -1,7 +1,6 @@
 import React from "react";
 import CommonDashboard from "../CommonDashboard/CommonDashboard";
 import EmployeeDCMDetails from "../EmployeeDCMDetails/EmployeeDCMDetails";
-import EmployeeProfile from "../EmployeeProfile/EmployeeProfile";
 import SettingModal from "../SettingModal/SettingModal";
 
 const EmployeeDCMDetailsComp = () => {
