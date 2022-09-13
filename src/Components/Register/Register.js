@@ -12,12 +12,9 @@ const Register = () => {
     window.location.reload();
   };
 
-
-
   let showDate = new Date();
-  let todayDate = showDate.getDate()+'/'+(showDate.getMonth()+1)+'/'+showDate.getFullYear();
+  let todayDate =showDate.getDate()+'-'+(showDate.getMonth()+1)+'-'+showDate.getFullYear();
   let timeNow = showDate.getHours()+":"+showDate.getMinutes()+":"+showDate.getSeconds()
-
 
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
@@ -30,7 +27,7 @@ const Register = () => {
       mobile: "",
       password: "",
       confirmPassword: "",
-      createDate:todayDate+","+timeNow
+      createDate:todayDate+","+timeNow,
     },
     validate: (values) => {
       const errors = {};
@@ -62,7 +59,9 @@ const Register = () => {
         );
 
         setMsg(res.data.message);
-        navigate('/login')
+         setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } catch (err) {
         setError(err.response.data.message);
         setTimeout(() => {
@@ -300,8 +299,8 @@ const Register = () => {
                   <p>
                     Already a member? <a href="" onClick={()=>navigate('/login')}>Login here</a>
                   </p>
-                  {error && <div className="error_msg">{error}</div>}
-                      {msg && <div className="success_msg">{msg}</div>}
+                  {error && <div className="error_msg" style={{background:"red",color:"white"}}>{error}</div>}
+                      {msg && <div className="success_msg" style={{background:"green",color:"white"}}>{msg}</div>}
                 </div>
               </div>
             </div>

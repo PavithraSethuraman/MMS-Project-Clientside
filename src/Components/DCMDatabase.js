@@ -1,9 +1,6 @@
 import React, {useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../authContext/AuthContext";
-import DatePicker from "./DatePicker/DatePicker";
-
-
 
 
 const DCMDatabase = () => {
@@ -17,80 +14,57 @@ const DCMDatabase = () => {
     fetchData();
   }, []);
 
+
   const [name, setName] = useState("");
+
 
   // the search result
   const [foundUsers, setFoundUsers] = useState(userData);
 
+  
+
   const filter = (e) => {
     const keyword = e.target.value;
+   
     if (keyword !== "") {
       const results = userData.filter((user) => {
         const name = user.employeeName.toLowerCase();
-         return name.startsWith(keyword);
+        return name.startsWith(keyword);
       });
       setFoundUsers(results);
      
+      
     } else {
       setFoundUsers(userData);
     }
+setName(keyword)
+  }
 
-    setName(keyword);
+
+
+  const [dateRange, setDateRange] = useState({
+    startDate:"",
+    endDate:"",
+  })
+  const handleChange = (e) => {
+    setDateRange((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
-
-
-const [startDate, setStartDate] = useState("")
-const [endDate, setEndDate] = useState("")
-
-// const dates = [];
-
-// const getDatesInRange = () => {
-//     const start = new Date(startDate);
-//     const end = new Date(endDate);
-
-//     const date = new Date(start.getTime());
-
-   
-
-//     while (date <= end) {
-//       dates.push(new Date(date).getTime());
-//       date.setDate(date.getDate() + 1);
-//     }
-    
-//     return dates;
-//   };
-//   getDatesInRange()
-
-  const [foundDate, setFoundDate] = useState(userData)
-
-  const filterDate = (e) => {
-    const start =new Date(e.target.value)
-    const end =new Date(e.target.value)
-    const date = new Date(start);
-    const dates = []
-    while (date <= end) {
-      dates.push(new Date(date));
-      date.setDate(date.getDate() + 1);
-    }
-    
-    if (start !== "") {
-        const results = userData.filter((user) => {
-          const newDate = user.createDate.includes(dates)
-          
-        //   console.log(newDate)
-        //   let formatted_date = newDate.getFullYear() + "-" + (newDate.getMonth() + 1) + "-" + newDate.getDate()
-        //   console.log(formatted_date)
-          return newDate
-        });
-        console.log(results)
-        setFoundDate(results);
-      } else {
-        setFoundDate(userData);
-      }
   
-      setStartDate(start);
-      setEndDate(end);
-  };
+console.log(dateRange)
+
+
+const dateFilter = async ()=>{
+   try {
+    const res = await axios.post("http://localhost:5000/api/search/filtered", dateRange);
+    console.log(res)
+    setFoundUsers(res)
+      
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
 
   return (
     <>
@@ -99,8 +73,8 @@ const [endDate, setEndDate] = useState("")
           <input
             type="text"
             id="search"
-            value={name}
             onChange={filter}
+             value={name}
             className="form-control"
             placeholder="Search Names Here..."
           />
@@ -115,16 +89,17 @@ const [endDate, setEndDate] = useState("")
             type="date"
             id="startDate"
             name="startDate"
-            value={startDate}
-            onChange={filterDate}
+            value={dateRange.startDate}
+            onChange={handleChange}
+           
           />{" "}
           To :{" "}
           <input
             type="date"
             id="endDate"
             name="endDate"
-            value={endDate}
-            onChange={filterDate}
+            value={dateRange.endDate}
+            onChange={handleChange}
           />
         </div>
       <br />
@@ -150,7 +125,7 @@ const [endDate, setEndDate] = useState("")
             </tr>
           </thead>
           <tbody>
-          {foundDate && foundDate.length > 0 ? foundDate.map((e, index) => {
+          {foundUsers && foundUsers.length > 0 ? foundUsers.map((e, index) => {
              return (
                 <tr key={index}>
                   <td className="text-center ">{e.dcmId}</td>

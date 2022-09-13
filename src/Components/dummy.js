@@ -1,41 +1,53 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { AuthContext } from "../../authContext/AuthContext";
-import { AgGridColumn, AgGridReact } from "ag-grid-react";
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { AuthContext } from "../authContext/AuthContext";
+import BootstrapTable from 'react-bootstrap-table-next'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css'
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
+import filterFactory, { textFilter,dateFilter } from 'react-bootstrap-table2-filter';
+import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css'
 
-const dateFilterParams = {
-  comparator: function (filterLocalDateAtMidnight, cellValue) {
-    var dateAsString = cellValue;
-    if (dateAsString == null) return -1;
-    var dateParts = dateAsString.split("-");
-    var cellDate = new Date(
-      Number(dateParts[0]),
-      Number(dateParts[1]) - 1,
-      Number(dateParts[2])
-    );
-    if (cellDate > filterLocalDateAtMidnight) {
-      return 1;
-    }
-
-    if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
-      return 0;
-    }
-    if (cellDate < filterLocalDateAtMidnight) {
-      return -1;
-    }
-  },
-  browserDatePicker: true,
-};
 
 const Dummy = () => {
   const { user } = useContext(AuthContext);
-  const [gridApi, setGridApi] = useState();
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
 
-  const [userData, setUserData] = useState();
+  const columns = [{
+    dataField:"dcmId" , text:"#"
+  },
+  {
+    dataField:"employeeName" , text:"Employee Name",sort:true, filter: textFilter()
+  },
+  {
+    dataField:"createDate" , text:"Create Date", filter: dateFilter(),sort:true
+  },
+
+  {
+    dataField:"inTime" , text:"In-Time",sort:true
+  },
+
+]
+
+
+
+const pagination = paginationFactory({
+  page:1,
+  sizePerPage:10,
+  lastPageText:'>>',
+  firstPageText:'<<',
+  nextPageText:'>',
+  prePageText:'<',
+  showTotal:true,
+  alwaysShowAllBtns:true,
+  onPageChange:function(page, sizePerPage){
+    console.log('page',page);
+    console.log('sizePerPage',sizePerPage)
+  }
+})
+  
+
+  const [userData, setUserData] = useState([]);
   useEffect(() => {
     async function fetchData() {
       let users = await axios.get("http://localhost:5000/api/dcm");
@@ -44,239 +56,16 @@ const Dummy = () => {
     fetchData();
   }, []);
 
-  const [name, setName] = useState("");
-
-  // the search result
-  const [foundUsers, setFoundUsers] = useState(userData);
-
-  const filter = (e) => {
-    const keyword = e.target.value;
-
-    if (keyword !== "") {
-      const results = userData.filter((user) => {
-        const name = user.employeeName.toLowerCase();
-        return name.startsWith(keyword);
-      });
-      setFoundUsers(results);
-    } else {
-      setFoundUsers(userData);
-    }
-
-    setName(keyword);
-  };
-
-
-
-
-  const onGridReady = (params) => {
-    setGridApi(params);
-  };
-  const getFilterType = () => {
-    if (startDate !== "" && endDate !== "") return "inRange";
-    else if (startDate !== "") return "Equals";
-    else if (endDate !== "") return "Equals";
-  };
-  useEffect(() => {
-    if (gridApi) {
-      if (startDate !== "" && endDate !== "" && startDate > endDate) {
-        alert("Start Date should be before End Date");
-        setEndDate("");
-      } else {
-        var dateFilterComponent = gridApi.api.getFilterInstance("createDate");
-        dateFilterComponent.setModel({
-          type: getFilterType(),
-          dateFrom: startDate ? startDate : endDate,
-          dateTo: endDate,
-        });
-        gridApi.api.onFilterChanged();
-      }
-    }
-  }, [startDate, endDate]);
+ 
 
   return (
     <>
-      <div className="form-group">
-        <div className="controls">
-          <input
-            type="text"
-            id="search"
-            value={name}
-            onChange={filter}
-            className="form-control"
-            placeholder="Search Names Here..."
-          />
-          <div className="help-block with-errors"></div>
-        </div>
-        {/* <!-- end controls --> */}
-      </div>
-    <br/>
-    <br/>
-      <div className="ag-theme-alpine" style={{ height: 400 }}>
-        <div style={{ marginLeft: "400px" }}>
-          From :{" "}
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />{" "}
-          To :{" "}
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-        </div>
-        <br/>
-        {foundUsers && foundUsers.length > 0 ? (
-          <AgGridReact 
-            defaultColDef={{ flex: 1 }}
-            rowHeight={60}
-            rowData={foundUsers}
-            onGridReady={onGridReady}
-          >
-            <AgGridColumn
-              field="dcmId"
-              headerName="#"
-              filter={true}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="employeeName"
-              headerName="Employee Name"
-              filter={true}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="createDate"
-              headerName="Create Date"
-              sortable={true}
-              filter="agDateColumnFilter"
-              filterParams={dateFilterParams}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="createTime"
-              headerName="Create Time"
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="inTime"
-              headerName="In-Time"
-              sortable={true}
-              filter={true}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="customerName"
-              headerName="Customer Name"
-              sortable={true}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="needs"
-              headerName="Needs"
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="mobile"
-              headerName="Contact No"
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="email"
-              headerName="Email"
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="outTime"
-              headerName="Out-Time"
-              sortable={true}
-              filter={true}
-              cellClass="vertical-middle"
-            />
-          </AgGridReact>
-        ) : (
-          <AgGridReact
-            defaultColDef={{ flex: 1 }}
-            rowHeight={60}
-            rowData={userData} 
-            onGridReady={onGridReady}
-          >
-            <AgGridColumn
-              field="dcmId"
-              headerName="#"
-              filter={true}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="employeeName"
-              headerName="Employee Name"
-              sortable="asc"
-              filter={true}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="createDate"
-              headerName="Create Date"
-              sortable={true}
-              filter="agDateColumnFilter"
-              filterParams={dateFilterParams}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="createTime"
-              headerName="Create Time"
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="inTime"
-              headerName="In-Time"
-              sortable={true}
-              filter={true}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="customerName"
-              headerName="Customer Name"
-              sortable={true}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="needs"
-              headerName="Needs"
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="mobile"
-              headerName="Contact No"
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="email"
-              headerName="Email"
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="outTime"
-              headerName="Out-Time"
-              sortable={true}
-              filter={true}
-              cellClass="vertical-middle"
-            />
-            <AgGridColumn
-              field="Edit"
-              headerName="Action"
-              cellClass="vertical-middle"
-            />
-          </AgGridReact>
-        )}
-
-        {/* <AgGridReact
-      rowData={userData}
-      columnDefs={columns}
-      defaultColDef={defColumnDefs}
-      onGridReady={onGridReady} sortable={true} filter={true} /> */}
-      </div>
+   <div>
+    <BootstrapTable bootstrap4 keyField="dcmId"
+    filterPosition="top"
+    columns={columns} data={userData} pagination={pagination} filter={filterFactory()}/>
+   </div>
+      
       {/* <table
           className="table table-bordered"
           id="dataTable"
@@ -298,7 +87,7 @@ const Dummy = () => {
           </thead>
 
           <tbody>
-            {foundUsers && foundUsers.length > 0 ? foundUsers.map((item, index) => {
+            {userData && userData.length > 0 ? userData.map((item, index) => {
                   return (
                     <tr key={index}>
                       <td className="text-center ">{item.dcmId}</td>
@@ -310,9 +99,7 @@ const Dummy = () => {
                       <td className="text-center ">{item.email}</td>
                       <td className="text-center ">{item.outTime}</td>
                       <td className="text-center ">
-                        <Link to={`/dcm-edit/${item.userId}`}>
-                          <i className="fa fa-pencil"></i>
-                        </Link>
+                        
                       </td>
                     </tr>
                   );
@@ -328,11 +115,7 @@ const Dummy = () => {
                       <td className="text-center ">{e.mobile}</td>
                       <td className="text-center ">{e.email}</td>
                       <td className="text-center ">{e.outTime}</td>
-                      <td className="text-center ">
-                        <Link to={`/dcm-edit/${e.dcmId}`}>
-                          <i className="fa fa-pencil"></i>
-                        </Link>
-                      </td>
+                      
                     </tr>
                   );
                 })}

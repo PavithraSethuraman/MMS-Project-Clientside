@@ -24,7 +24,7 @@ const CreateDCM = () => {
         expectedDate: undefined,
         remarks: undefined,
         createDate:todayDate,
-        createTime:timeNow
+        createTime:timeNow,
       });
     
     

@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import UserContext from "../../UserContext";
 
 function FilterComp({onNameFilter,onDateFilter}) {
 
+  const userContext = useContext(UserContext) 
+  
+
     const [filters, setFilters] = useState({
         name: "",
-        from: "",
-        to: "",
+        startDate: "",
+        endDate: "",
       });
     
       const handleInput = (field) => (event) => {
@@ -20,15 +24,20 @@ function FilterComp({onNameFilter,onDateFilter}) {
           case "name":
             onNameFilter(value);
             break;
-          case "from":
-            onDateFilter(value, "from");
+          case "startDate":
+            onDateFilter(value, "startDate");
             break;
-          case "to":
+          case "endDate":
+            onDateFilter(value, "endDate");
             break;
           default:
             break;
         }
       };
+
+      userContext.setStartFilterDate(filters.startDate)
+      userContext.setEndFilterDate(filters.endDate)
+
   return (
    <>
    <div className="form-group">
@@ -49,9 +58,10 @@ function FilterComp({onNameFilter,onDateFilter}) {
           From :{" "}
           <input
             type="date"
-            id="createDate"
-            name="createDate"
-          onChange={handleInput("from")}
+            id="startDate"
+            name="startDate"
+            value={filters.startDate}
+          onChange={handleInput("startDate")}
 
             
           />{" "}
@@ -59,7 +69,9 @@ function FilterComp({onNameFilter,onDateFilter}) {
           <input
             type="date"
             id="endDate"
-          onChange={handleInput("to")}
+            name="endDate"
+            value={filters.endDate}
+          onChange={handleInput("endDate")}
           />
         </div>
         <br/>

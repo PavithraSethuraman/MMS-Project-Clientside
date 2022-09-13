@@ -19,14 +19,17 @@ import AdminEmployeeDCMDetails from "./Components/AdminEmployeeDCMDetails/AdminE
 import AdminDCMEdit from "./Components/AdminDCMEdit/AdminDCMEdit";
 import DCMDatabase from "./Components/DCMDatabase";
 import EmployeeProfileEditComp from "./Components/EmployeeProfileEditComp/EmployeeProfileEditComp";
+import Dummy from "./Components/dummy";
 
 function App() {
   const { user } = useContext(AuthContext);
   const [searchName, setSearchName] = useState()
   const [foundUsers, setFoundUsers] = useState();
+  const [startFilterDate, setStartFilterDate] = useState();
+  const [endFilterDate, setEndFilterDate] = useState();
   return (
     <Router>
-      <UserProvider value={{searchName,setSearchName,foundUsers, setFoundUsers}}>
+      <UserProvider value={{searchName,setSearchName,foundUsers, setFoundUsers,startFilterDate,setStartFilterDate,endFilterDate,setEndFilterDate}}>
       <Routes>
         <Route path="/login" element={<Login />} />
 
@@ -54,6 +57,7 @@ function App() {
             <Route path="/adminEmployeeDCMDatabase" element={<AdminEmployeeDCMDetails />} />  
 
             <Route path="/user-edit/:id" element={<EmployeeProfileEditComp />} />
+            <Route path="/dummy" element={<Dummy />} />
 
             <Route path="/dcm-edit/:id" element={<AdminDCMEdit />} />
             <Route path="/dcmDatabase" element={<DCMDatabase />} />
