@@ -17,6 +17,7 @@ import { UserProvider } from "./UserContext";
 import AdminEmployeeProfileDetails from "./Components/AdminEmployeeDCMDetails/AdminEmployeeDCMDetails";
 import AdminEmployeeDCMDetails from "./Components/AdminEmployeeDCMDetails/AdminEmployeeDCMDetails";
 import AdminDCMEdit from "./Components/AdminDCMEdit/AdminDCMEdit";
+import EmployeeProfileEditComp from "./Components/EmployeeProfileEditComp/EmployeeProfileEditComp";
 
 function App() {
   const { user } = useContext(AuthContext);
