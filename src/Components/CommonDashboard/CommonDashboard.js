@@ -160,7 +160,7 @@ const CommonDashboard = () => {
               <small>MAIN</small>
             </li>
             <li onClick={load}>
-              <a className="m-link active" href="#layout-k">
+              <a className="m-link" href="#layout-k">
                 <i className="fa fa-dashboard"></i>
                 <span>Dashboard</span>
               </a>
@@ -170,7 +170,7 @@ const CommonDashboard = () => {
                 <a
                   className="m-link"
                   href=""
-                  onClick={() =>{user.details.role==='user' ? navigate("/employeeDcmDetailsComp") : navigate('/adminEmployeeDCMDatabase')} }
+                  onClick={() =>{user.details.role==="user" ? navigate("/employeeDcmDetailsComp") : navigate('/adminEmployeeDCMDatabase')} }
                 >
                   <i className="fa fa-calendar"></i>{" "}
                   <span>Daily Customer Meet</span>
